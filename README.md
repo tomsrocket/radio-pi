@@ -60,3 +60,7 @@ Minus - key:  Decrease volume
 
 Star * key:   Pause playback
 
+Dot . key:    Repeat station info
+
+Slash / key:  Jump to next station in playlist
+
