@@ -3,6 +3,8 @@ radio-pi
 
 Internetradio stream player shell script for Raspberry Pi
 
+It will "say" the name of the radio station on station change. 
+
 
 Installation 
 ============
