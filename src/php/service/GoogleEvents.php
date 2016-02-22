@@ -53,7 +53,7 @@ de.french#holiday@group.v.calendar.google.com -- Feiertage in Frankreich
     $calendarId = 'primary';
     $calendarId = 'ankeic1u7it5qpreggu94djadc@group.calendar.google.com';
     $optParams = array(
-      'maxResults' => 3,
+      'maxResults' => 20,
       'orderBy' => 'startTime',
       'singleEvents' => TRUE,
       'timeMin' => date('c'),
@@ -80,7 +80,7 @@ de.french#holiday@group.v.calendar.google.com -- Feiertage in Frankreich
 
     $events = array_merge( $events,$results->getItems());
 
-
+    $eventsByDay = [];
 
     foreach ($events as $event) {
 
@@ -89,24 +89,38 @@ de.french#holiday@group.v.calendar.google.com -- Feiertage in Frankreich
         if (empty($start)) {
           $start = $event->start->date;
         }
+
+        $day = strftime("%Y-%m-%d",strtotime($start));
+
+
         $desc = $event->getDescription();
         $icon = "";
         if (preg_match('/\(Sticker_([^\)]+)\)/', $desc, $matches)) {
             $icon = $matches[1];
         }
-
-        $date = strftime("%a %d.%m.",strtotime($start));
-        $time = strftime("%R",strtotime($start));
-
         if ($icon) {
-          $iconfile = 'icons/'.$icon.'.png';
+          $iconfile = 'icon/'.$icon.'.png';
           if (file_exists($iconfile)) {
             $icon = '<img src="'.$iconfile.'" />';
           }
         }
-        printf('<div class="event '.$event->getTransparency().'">'.$icon.' <span>%s</span> <i>%s</i> <b>%s</b> </div>', $date, $time, $event->getSummary() );
+
+        if (!isset($eventsByDay[$day])) {
+          $eventsByDay[$day] = [];
+        }
+        $eventsByDay[$day][] = [
+            'icon' => $icon,
+            'date' =>strftime("%a %d.%m.",strtotime($start)),
+            'time' =>strftime("%R",strtotime($start)),
+            'start' => strtotime($start),
+            'end' => strtotime($event->end->endTime),
+            'calendar' => $event->getTransparency(),
+            'content' => $event->getSummary()
+        ];
 
     }
+
+    return $eventsByDay;
 
   }
 
