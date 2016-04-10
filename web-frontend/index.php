@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  <?php
+  $WEB_PATH = __DIR__ ;
+
+  require('vendor/autoload.php');
+  require('../config/config.php');
+  require('../src/php/app.php');
+
+  ?>
+
   <meta charset="utf-8">
   <link href='https://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="libs/ uikit.almost-flat.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-  <script src="libs/uik it.min.js"></script>
   <script src="libs/jquery.kinetic.min.js"></script>
 	<!--script src="libs/jquery.smoothTouchScroll.js"></script -->
 
@@ -31,7 +38,7 @@
     .weather.warm {color:#e99}
     .weather.normal {color:#ddd}
     img.weatherIcon {float:left;margin:9px 9px 0 0}
-    body {background-color:black}
+    body {background-color:<?= RandomColor::one(array('luminosity' => 'random', 'hue' => 'dark')); ?>}
     .date {color:white}
     #time {width: 170px;
     display: inline-block;}
@@ -48,15 +55,9 @@
   </style>
 
 </head>
+
 <body>
-<?php
-$WEB_PATH = __DIR__ ;
 
-require('vendor/autoload.php');
-require('../config/config.php');
-require('../src/php/app.php');
-
-?>
   <div class="uk-container uk-container-center">
     <div class="uk-grid uk-grid-small">
       <div class="uk-width-1-1">
@@ -115,6 +116,11 @@ require('../src/php/app.php');
                       </td></tr></table>
                     </div>', $event['time'], $event['content'] );
                 }
+                if ($count%2 != 0) {
+                  echo '<div class="event" style="background-color:'.RandomColor::one(array('luminosity' => 'random', 'hue' => 'light')).'"></div>';
+                }
+
+
                 echo "</div>";
               }
             }
