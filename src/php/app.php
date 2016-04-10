@@ -48,3 +48,4 @@ function getClient() {
 
 
 require 'service/GoogleEvents.php';
+require 'service/Weather.php';
